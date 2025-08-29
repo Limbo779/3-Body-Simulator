@@ -49,3 +49,6 @@ for _ in range(1000):
     fb=(G*m1*m2*rb)/(mod(rb)**3) # force between body 1 and body 3
     fc=(G*m1*m2*rc)/(mod(rc)**3) # force between body 2 and body 3
     
+    # position and velocity updating
+    # body 1
+    
