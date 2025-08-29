@@ -1,6 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+def mod(x): # returns the modular of a vector
+    return (np.dot(x,x))**(0.5)
+
 # body 1
 p1=np.array([1,1])
 m1=1
@@ -38,8 +41,11 @@ def collision(x):
 
 for _ in range(1000):
     plt.clf() 
-    ra=(np.dot(p1-p2,p1-p2))**(0.5) # vector btw body 1 and body 2 
-    rb=(np.dot(p1-p3,p1-p3))**(0.5) # vector btw body 1 and body 3
-    rc=(np.dot(p2-p3,p2-p3))**(0.5) # vector btw body 2 and body 3
+    ra=p1-p2 # vector btw body 1 and body 2 
+    rb=p1-p3 # vector btw body 1 and body 3
+    rc=p2-p3 # vector btw body 2 and body 3
 
-    Aa=  
+    fa=(G*m1*m2*ra)/(mod(ra)**3) # force between body 1 and body 2
+    fb=(G*m1*m2*rb)/(mod(rb)**3) # force between body 1 and body 3
+    fc=(G*m1*m2*rc)/(mod(rc)**3) # force between body 2 and body 3
+    
