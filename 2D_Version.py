@@ -6,23 +6,23 @@ def mod(x): # returns the modular of a vector
 
 # body 1
 p1=np.array([1,1])
-m1=1
+m1=10**6
 v1=np.array([0,0])
 
 # body 2
 p2=np.array([5,1])
-m2=1
+m2=10**6
 v2=np.array([0,0])
 
 # body 3
 p3=np.array([3,4])
-m3=1
+m3=10**6
 v3=np.array([0,0])
 
 # G Const
 G=6.67430*(10**(-11))
 # small timestep
-dt=0.01
+dt=1
 
 # managing collision (when two bodies touch each they make elastic collision)
 # they touch each other when they are below the distance of 2 btw each other (1 is their radius)
@@ -42,7 +42,7 @@ def collision(x):
         v2=v2*(-1)
 
 for _ in range(1000):
-    plt.clf() 
+    #plt.clf()
     ra=p1-p2 # vector btw body 1 and body 2 
     rb=p1-p3 # vector btw body 1 and body 3
     rc=p2-p3 # vector btw body 2 and body 3
@@ -65,6 +65,20 @@ for _ in range(1000):
     p3 = p3+v3*dt+(((-fc-fb)*(dt**2))/(2*m3))
     v3 = v3 + (((-fc-fb)*dt)/m3)
 
-    plt.scatter([p1[0],p2[0],p3[0]],[p1[1],p2[1],p3[1]])
+    #plt.scatter([p1[0],p2[0],p3[0]],[p1[1],p2[1],p3[1]])
+    x=[p1[0],p2[0],p3[0]]
+    y=[p1[1],p2[1],p3[1]]
+    
+    print(x,y)
 
-plt.show()
+    #plt.scatter(*p1)
+    #plt.scatter(*p2)
+    #plt.scatter(*p3)
+    
+    #plt.scatter(x,y)
+    #plt.pause(0.1)
+    #plt.close()
+
+
+
+#plt.show()
