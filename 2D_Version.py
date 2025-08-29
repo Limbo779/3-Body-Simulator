@@ -21,6 +21,8 @@ v3=np.array([0,0])
 
 # G Const
 G=6.67430*(10**(-11))
+# small timestep
+dt=0.01
 
 # managing collision (when two bodies touch each they make elastic collision)
 # they touch each other when they are below the distance of 2 btw each other (1 is their radius)
@@ -50,5 +52,17 @@ for _ in range(1000):
     fc=(G*m1*m2*rc)/(mod(rc)**3) # force between body 2 and body 3
     
     # position and velocity updating
+    
     # body 1
+    p1 = p1+v1*dt+(((fa+fb)*(dt**2))/(2*m1))
+    v1 = v1 + ((fa*dt)/m1)
+
+    # body 2
+    p2 = p2+v2*dt+(((fc-fa)*(dt**2))/(2*m2))
+    v2 = v2 + (((fc-fa)*dt)/m2)
+
+    # body 3
+    p3 = p3+v3*dt+(((-fc-fb)*(dt**2))/(2*m3))
+    v3 = v3 + (((-fc-fb)*dt)/m3)
+
     
