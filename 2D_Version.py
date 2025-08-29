@@ -19,7 +19,8 @@ v3=np.array([0,0])
 # G Const
 G=6.67430*(10**(-11))
 
-# managing collision
+# managing collision (when two bodies touch each they make elastic collision)
+# they touch each other when they are below the distance of 2 btw each other (1 is their radius)
 def collision(x):
     global v1,v2,v3
     # a means v1 and v2
@@ -35,3 +36,10 @@ def collision(x):
         v3=v3*(-1)
         v2=v2*(-1)
 
+for _ in range(1000):
+    plt.clf() 
+    ra=(np.dot(p1-p2,p1-p2))**(0.5) # vector btw body 1 and body 2 
+    rb=(np.dot(p1-p3,p1-p3))**(0.5) # vector btw body 1 and body 3
+    rc=(np.dot(p2-p3,p2-p3))**(0.5) # vector btw body 2 and body 3
+
+    Aa=  
