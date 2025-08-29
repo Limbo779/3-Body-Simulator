@@ -65,4 +65,6 @@ for _ in range(1000):
     p3 = p3+v3*dt+(((-fc-fb)*(dt**2))/(2*m3))
     v3 = v3 + (((-fc-fb)*dt)/m3)
 
-    
+    plt.scatter([p1[0],p2[0],p3[0]],[p1[1],p2[1],p3[1]])
+
+plt.show()
