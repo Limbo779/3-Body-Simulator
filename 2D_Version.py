@@ -50,15 +50,8 @@ class Animator:
             else:
                 print("Please provide x and y lists when calling inside the loop.")
 
-# Usage:
-# Create an instance
+# Create an instance for Animation
 animator = Animator()
-
-# Inside your simulation loop:
-# animator.animate([current_x1, current_x2, current_x3], [current_y1, current_y2, current_y3])
-
-# After the loop:
-# animator.animate(command='Start')
 
 def mod(x): # returns the modular of a vector
     return (np.dot(x,x))**(0.5)
@@ -79,7 +72,7 @@ m3=10
 v3=np.array([0,0])
 
 # G Const
-G=1 #6.67430*(10**(-11))
+G=1 #6.67430*(10**(-11)) is the actual value , but this is so small 
 # small timestep
 dt=0.01
 
@@ -99,21 +92,7 @@ def collision(x):
     else:
         v3=v3*(-1)
         v2=v2*(-1)
-
-#fig = plt.figure() 
-#l,=plt.plot([],[])
-#
-#plt.xlim(-100,100)
-#plt.ylim(-100,100)
-
-
-
-#metadata = dict(title='Movie',artist='Limbo')
-#writer=PillowWriter(fps=5,metadata=metadata)
-#
-#with writer.saving(fig,"body.gif",72):    
 for _ in range(3000):
-    #plt.clf()
     ra=(p2-p1) # vector btw body 1 and body 2 
     rb=(p3-p1) # vector btw body 1 and body 3
     rc=(p3-p2) # vector btw body 2 and body 3
