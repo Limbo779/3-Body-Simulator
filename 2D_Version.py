@@ -9,6 +9,7 @@ class Animator:
         self.x_list = []  # To collect x coordinates over time
         self.y_list = []  # To collect y coordinates over time
         self.is_started = False  # Flag to prevent multiple animations
+        self.ani = None  # To store the animation object
 
     def animate(self, x=None, y=None, command=None):
         if command == 'Start':
@@ -32,14 +33,22 @@ class Animator:
             colors = ['red', 'blue', 'green']
             scatters = [ax.plot([], [], 'o', color=colors[i], markersize=8)[0] for i in range(3)]
             
+            # Initialize trajectory lines (the only addition)
+            trajectories = [ax.plot([], [], '-', color=colors[i], linewidth=1)[0] for i in range(3)]
+            
             # Update function for animation
             def update(frame):
                 for i in range(3):
-                    scatters[i].set_data(self.x_list[frame][i], self.y_list[frame][i])
-                return scatters
+                    # Fix: Wrap scalars in lists to make them sequences
+                    scatters[i].set_data([self.x_list[frame][i]], [self.y_list[frame][i]])
+                    # Update trajectory (builds path up to current frame)
+                    traj_x = [pos[i] for pos in self.x_list[:frame+1]]
+                    traj_y = [pos[i] for pos in self.y_list[:frame+1]]
+                    trajectories[i].set_data(traj_x, traj_y)
+                return scatters + trajectories
             
-            # Create and show animation
-            ani = animation.FuncAnimation(fig, update, frames=len(self.x_list), interval=50, blit=True)
+            # Create and show animation, storing ani to prevent garbage collection issues
+            self.ani = animation.FuncAnimation(fig, update, frames=len(self.x_list), interval=50, blit=True)
             plt.show()
         
         else:
@@ -50,6 +59,9 @@ class Animator:
             else:
                 print("Please provide x and y lists when calling inside the loop.")
 
+
+
+
 # Create an instance for Animation
 animator = Animator()
 
@@ -57,19 +69,19 @@ def mod(x): # returns the modular of a vector
     return (np.dot(x,x))**(0.5)
 
 # body 1
-p1=np.random.randint(0,10,size=2)
+p1=np.array([3,0])  #np.random.randint(0,10,size=2)
 m1=10
-v1=np.array([0,0])
+v1=np.array([0,1])
 
 # body 2
-p2=np.random.randint(0,10,size=2)
+p2=np.array([0,0]) #np.random.randint(0,10,size=2)
 m2=10
-v2=np.array([0,0])
+v2=np.array([0,-1])
 
 # body 3
-p3=np.random.randint(0,10,size=2)
+p3=np.array([0,25])  #np.random.randint(0,10,size=2)
 m3=10
-v3=np.array([0,0])
+v3=np.array([0,-5])
 
 # G Const
 G=1 #6.67430*(10**(-11)) is the actual value , but this is so small 
@@ -92,15 +104,15 @@ def collision(x):
     else:
         v3=v3*(-1)
         v2=v2*(-1)
-for _ in range(3000):
+for _ in range(10000):
     ra=(p2-p1) # vector btw body 1 and body 2 
     rb=(p3-p1) # vector btw body 1 and body 3
     rc=(p3-p2) # vector btw body 2 and body 3
-    if mod(p1-p2) < 0.5 :
+    if mod(p1-p2) < 0.1 :
         collision("a")
-    elif mod(p1-p3) < 0.5 :
+    elif mod(p1-p3) < 0.1 :
         collision("b")
-    elif mod(p3-p2) < 0.5 :
+    elif mod(p3-p2) < 0.1 :
         collision("c")
     fa=(G*m1*m2*ra)/(mod(ra)**3) # force between body 1 and body 2
     fb=(G*m1*m3*rb)/(mod(rb)**3) # force between body 1 and body 3
@@ -127,4 +139,3 @@ for _ in range(3000):
     animator.animate(x, y)
 
 animator.animate(command='Start')    
-
