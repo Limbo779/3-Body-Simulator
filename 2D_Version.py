@@ -69,19 +69,19 @@ def mod(x): # returns the modular of a vector
     return (np.dot(x,x))**(0.5)
 
 # body 1
-p1=np.array([3,0])  #np.random.randint(0,10,size=2)
+p1=np.random.randint(0,30,size=2)
 m1=10
-v1=np.array([0,1])
+v1=np.random.randint(-3,0,size=2)
 
 # body 2
-p2=np.array([0,0]) #np.random.randint(0,10,size=2)
+p2=np.random.randint(0,30,size=2)
 m2=10
-v2=np.array([0,-1])
+v2=np.random.randint(-3,3,size=2)
 
 # body 3
-p3=np.array([0,25])  #np.random.randint(0,10,size=2)
+p3=np.random.randint(0,30,size=2)
 m3=10
-v3=np.array([0,-5])
+v3=np.random.randint(0,3,size=2)
 
 # G Const
 G=1 #6.67430*(10**(-11)) is the actual value , but this is so small 
@@ -91,19 +91,37 @@ dt=0.01
 # managing collision (when two bodies touch each they make elastic collision)
 # they touch each other when they are below the distance of 2 btw each other (1 is their radius)
 def collision(x):
-    global v1,v2,v3
+    global v1,v2,v3,p1,p2,p3
     # a means v1 and v2
     # b means v1 and v3
     # c means v2 and v3
     if x == "a":
-        v1=v1*(-1)
-        v2=v2*(-1)   
+        n=(p2-p1)/mod(p2-p1)
+        u1n=np.dot(v1,n)
+        u2n=np.dot(v2,n)
+        u1t=v1-u1n*n
+        u2t=v2-u2n*n
+        v1=(u2n*n)+u1t
+        v2=(u1n*n)+u2t
+
     elif x == "b":
-        v1=v1*(-1)
-        v3=v3*(-1)
+        n=(p3-p1)/mod(p3-p1)
+        u1n=np.dot(v1,n)
+        u3n=np.dot(v3,n)
+        u1t=v1-u1n*n
+        u3t=v3-u3n*n
+        v1=(u3n*n)+u1t
+        v3=(u1n*n)+u3t
+
     else:
-        v3=v3*(-1)
-        v2=v2*(-1)
+        n=(p3-p2)/mod(p3-p2)
+        u2n=np.dot(v2,n)
+        u3n=np.dot(v3,n)
+        u2t=v2-u2n*n
+        u3t=v3-u3n*n
+        v2=(u3n*n)+u2t
+        v3=(u2n*n)+u3t
+
 for _ in range(10000):
     ra=(p2-p1) # vector btw body 1 and body 2 
     rb=(p3-p1) # vector btw body 1 and body 3
