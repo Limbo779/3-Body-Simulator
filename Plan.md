@@ -12,6 +12,8 @@ and finally update the position and velocity of each body .
 
 ***Finished Till here***
 
-4.)make sure Energy , Momentum and Angular momentum is conserved
+4.)improve the collision mechanism
 
-5.)analyse why bodies fly off without collision 
+5.)make sure Energy , Momentum and Angular momentum is conserved
+
+
