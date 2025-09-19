@@ -6,10 +6,10 @@ import matplotlib.animation as animation
 # We'll use a class to maintain state across calls
 class Animator:
     def __init__(self):
-        self.x_list = []  # To collect x coordinates over time
-        self.y_list = []  # To collect y coordinates over time
-        self.is_started = False  # Flag to prevent multiple animations
-        self.ani = None  # To store the animation object
+        self.x_list = []  # List of [x1, x2, x3] for each time step
+        self.y_list = []  # List of [y1, y2, y3] for each time step
+        self.is_started = False
+        self.ani = None
 
     def animate(self, x=None, y=None, command=None):
         if command == 'Start':
@@ -17,42 +17,31 @@ class Animator:
                 print("Animation already started or no data collected.")
                 return
             self.is_started = True
-            
-            # Create figure and axis
+
             fig, ax = plt.subplots()
-            
-            # Set axis limits with padding
-            all_x = [xi for sublist in self.x_list for xi in sublist]
-            all_y = [yi for sublist in self.y_list for yi in sublist]
-            ax.set_xlim(min(all_x) - 1, max(all_x) + 1)
-            ax.set_ylim(min(all_y) - 1, max(all_y) + 1)
-            ax.set_aspect('equal')
-            ax.set_title('3-Body Simulation Animation')
-            
-            # Initialize scatters for three bodies with different colors
             colors = ['red', 'blue', 'green']
             scatters = [ax.plot([], [], 'o', color=colors[i], markersize=8)[0] for i in range(3)]
-            
-            # Initialize trajectory lines (the only addition)
             trajectories = [ax.plot([], [], '-', color=colors[i], linewidth=1)[0] for i in range(3)]
-            
-            # Update function for animation
+
+            ax.set_aspect('equal')
+            ax.set_title('3-Body Simulation Animation')
+
             def update(frame):
                 for i in range(3):
-                    # Fix: Wrap scalars in lists to make them sequences
                     scatters[i].set_data([self.x_list[frame][i]], [self.y_list[frame][i]])
-                    # Update trajectory (builds path up to current frame)
                     traj_x = [pos[i] for pos in self.x_list[:frame+1]]
                     traj_y = [pos[i] for pos in self.y_list[:frame+1]]
                     trajectories[i].set_data(traj_x, traj_y)
+                ax.relim()  # <-- recompute limits according to data
+                ax.autoscale_view()  # <-- automatically scale the axes
                 return scatters + trajectories
-            
-            # Create and show animation, storing ani to prevent garbage collection issues
-            self.ani = animation.FuncAnimation(fig, update, frames=len(self.x_list), interval=50, blit=True)
+
+            self.ani = animation.FuncAnimation(
+                fig, update, frames=len(self.x_list), interval=50, blit=False
+            )
             plt.show()
-        
+
         else:
-            # Collect data inside the loop (assume x and y are lists like [x1, x2, x3])
             if x is not None and y is not None:
                 self.x_list.append(x)
                 self.y_list.append(y)
